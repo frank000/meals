@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:meals/utils/app_routes.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
 
-  Widget _createItem(IconData icon, String label) {
+  Widget _createItem(
+      IconData icon, String label, BuildContext context, String routeName) {
     return ListTile(
-      leading: Icon(
-        icon,
-        size: 26,
-      ),
-      title: Text(
-        label,
-        style: TextStyle(
-            fontFamily: 'RobotoCondensed',
-            fontSize: 24,
-            fontWeight: FontWeight.bold),
-      ),
-      onTap: () {},
-    );
+        leading: Icon(
+          icon,
+          size: 26,
+        ),
+        title: Text(
+          label,
+          style: TextStyle(
+              fontFamily: 'RobotoCondensed',
+              fontSize: 24,
+              fontWeight: FontWeight.bold),
+        ),
+        onTap: () {
+          Navigator.of(context).pushReplacementNamed(routeName);
+        });
   }
 
   @override
@@ -42,8 +45,18 @@ class MainDrawer extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          _createItem(Icons.restaurant, 'Refeições'),
-          _createItem(Icons.settings, 'Configurações'),
+          _createItem(
+            Icons.restaurant,
+            'Refeições',
+            context,
+            AppRoutes.HOME,
+          ),
+          _createItem(
+            Icons.settings,
+            'Configurações',
+            context,
+            AppRoutes.SETTINGS,
+          ),
         ],
       ),
     );
