@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen({Key? key}) : super(key: key);
+  const MealDetailScreen(
+      {required this.onFavorite, Key? key, required this.isFavorite})
+      : super(key: key);
+
+  final Function(Meal) onFavorite;
+  final Function(Meal) isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +39,11 @@ class MealDetailScreen extends StatelessWidget {
         title: Text(meal.title),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.star),
-        onPressed: () => Navigator.of(context).pop(meal.title),
+        child: isFavorite(meal) ? Icon(Icons.star) : Icon(Icons.star_border),
+        // onPressed: () => Navigator.of(context).pop(meal.title),//eviando via navigator para a screen anterior
+        onPressed: () {
+          onFavorite(meal);
+        },
       ),
       body: SingleChildScrollView(
         child: Column(

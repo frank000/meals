@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:meals/components/main_drawer.dart';
+import 'package:meals/models/meal.dart';
 import 'package:meals/screens/categories_screen.dart';
 import 'package:meals/screens/favorite_screen.dart';
 
 class TabsScreen extends StatefulWidget {
-  const TabsScreen({Key? key}) : super(key: key);
+  const TabsScreen({required this.favoriteList, Key? key}) : super(key: key);
 
+  final List<Meal> favoriteList;
   @override
   State<TabsScreen> createState() => _TabsScreenState();
 }
@@ -13,10 +15,22 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedScreen = 0;
 
-  final List<Map<String, Object>> _screens = [
-    {'title': 'Lista de Categorias', 'screen': const CategoriesScreens()},
-    {'title': 'Meus Favoritos', 'screen': const FavoriteScreen()},
-  ];
+  List<Map<String, Object>>? _screens;
+
+  @override
+  initState() {
+    super.initState();
+    _screens = [
+      {'title': 'Lista de Categorias', 'screen': const CategoriesScreens()},
+      {
+        'title': 'Meus Favoritos',
+        'screen': FavoriteScreen(
+          favoriteList: widget.favoriteList,
+        )
+      },
+    ];
+  }
+
   _selectScreen(int index) {
     setState(() {
       _selectedScreen = index;
@@ -28,10 +42,10 @@ class _TabsScreenState extends State<TabsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _screens[_selectedScreen]['title'] as String,
+          _screens![_selectedScreen]['title'] as String,
         ),
       ),
-      body: _screens[_selectedScreen]['screen'] as Widget,
+      body: _screens![_selectedScreen]['screen'] as Widget,
       drawer: MainDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectScreen,
